@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-lg-4" :class="{'text-right': isRTL}">
+      <div class="col-lg-4" >
         <card type="chart">
           <template slot="header">
             <h5 class="card-category">{{$t('dashboard.dailySales')}}</h5>
@@ -20,6 +20,26 @@
                        :extra-options="blueBarChart.extraOptions">
             </bar-chart>
           </div>
+        </card>
+        <card type="chart">
+          <template slot="header">
+            <h3 class="card-title"><i class="tim-icons icon-coins"></i> Swap ERC20 Tokens</h3>
+          </template>
+          <input v-model="inputValue" id="inputValue"></input>
+          
+          <select name="tokens" v-model="inputToken" id="inputToken">
+            <option v-for="token in tokens">{{token}}</option>
+          </select>
+          
+          <div class="col-md-5 pr-md-1">
+            
+          </div>
+          <input v-model="outputValue" id="outputValue"></input>
+          <select name="tokens" v-model="outputToken" id="outputToken">
+            <option v-for="token in tokens">{{token}}</option>
+          </select>
+          <button @click="approveContract()">1. Approve Swap</button><button>2. Swap</button>
+
         </card>
       </div>
       
@@ -42,8 +62,23 @@
       TaskList,
       UserTable
     },
+    watch: {
+      inputValue: function(){
+        console.log(this.inputToken);
+        if (this.inputToken == this.tokens[0] && this.outputToken == this.tokens[1]){ //tokenA to tokenB
+          this.outputValue=2*this.inputValue;
+        } else if (this.inputToken == this.tokens[1] && this.outputToken == this.tokens[0]){ //tokenB to tokenA
+          this.outputValue = 0.5*this.inputValue;
+        }
+      }
+    },
     data() {
       return {
+        tokens: [
+          'tokenA', 'tokenB'
+        ],
+        inputValue:null,
+        outputValue:null,
         blueBarChart: {
           extraOptions: chartConfigs.barChartOptions,
           chartData: {
@@ -63,34 +98,14 @@
         }
       }
     },
-    computed: {
-      enableRTL() {
-        return this.$route.query.enableRTL;
-      },
-      isRTL() {
-        return this.$rtl.isRTL;
-      },
-      bigLineChartCategories() {
-        return this.$t('dashboard.chartCategories');
-      }
-    },
+    
     methods: {
-     
+     approveContract: function(){
+       console.log('APROVE FUNCTION');
+     },
+
     },
-    mounted() {
-      this.i18n = this.$i18n;
-      if (this.enableRTL) {
-        this.i18n.locale = 'ar';
-        this.$rtl.enableRTL();
-      }
-      this.initBigChart(0);
-    },
-    beforeDestroy() {
-      if (this.$rtl.isRTL) {
-        this.i18n.locale = 'en';
-        this.$rtl.disableRTL();
-      }
-    }
+    
   };
 </script>
 <style>
