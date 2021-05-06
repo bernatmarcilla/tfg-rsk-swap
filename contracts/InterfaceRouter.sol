@@ -21,6 +21,24 @@ abstract contract InterfaceRouter {
             uint256 liquidity
         );
 
+    function addLiquidity(
+        address tokenA,
+        address tokenB,
+        uint256 amountADesired,
+        uint256 amountBDesired,
+        uint256 amountAMin,
+        uint256 amountBMin,
+        address to,
+        uint256 deadline
+    )
+        external
+        virtual
+        returns (
+            uint256 amountA,
+            uint256 amountB,
+            uint256 liquidity
+        );
+
     address public WETH;
 
     function getAmountsIn(uint256 amountOut, address[] calldata path)
@@ -28,6 +46,14 @@ abstract contract InterfaceRouter {
         view
         virtual
         returns (uint256[] memory amounts);
+
+    function swapTokensForExactTokens(
+        uint256 amountOut,
+        uint256 amountInMax,
+        address[] calldata path,
+        address to,
+        uint256 deadline
+    ) external virtual returns (uint256[] memory amounts);
 
     function swapETHForExactTokens(
         uint256 amountOut,
