@@ -55,6 +55,8 @@
   import UserTable from './Dashboard/UserTable';
   import config from '@/config';
 
+  const Web3 = require("web3");
+
   export default {
     components: {
       LineChart,
@@ -102,6 +104,13 @@
     methods: {
      approveContract: function(){
        console.log('APROVE FUNCTION');
+
+        if (typeof web3 !== 'undefined') {
+        web3 = new Web3(window.ethereum);
+    } else {
+        console.log('No web3? You should consider trying MetaMask!');
+        web3 = new Web3(new window.ethereum.HttpProvider('http://localhost:8080'));
+    }
      },
 
     },

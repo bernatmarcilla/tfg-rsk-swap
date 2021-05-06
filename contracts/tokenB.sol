@@ -29,6 +29,6 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 contract tokenB is ERC20 {
     
     constructor(uint256 initialSupply) public ERC20("tokenB", "TKB") {
-        _mint(msg.sender, initialSupply);
+        _mint(msg.sender, initialSupply* (10 ** 18));
     }
 }
