@@ -38,7 +38,9 @@
           <select name="tokens" v-model="outputToken" id="outputToken">
             <option v-for="token in tokens">{{token}}</option>
           </select>
-          <button @click="approveContract()">1. Approve Swap</button><button>2. Swap</button>
+          <br>
+          <button @click="approveContract()" :disabled="approveSwap">1. Approve Swap</button>
+          <button @click="swapTokens()" :disabled="!approveSwap">2. Swap</button>
 
         </card>
       </div>
@@ -54,8 +56,10 @@
   import TaskList from './Dashboard/TaskList';
   import UserTable from './Dashboard/UserTable';
   import config from '@/config';
+  import contractsInfo from './../plugins/contractsInfo.js'
 
   const Web3 = require("web3");
+  web3 = new Web3(window.ethereum);
 
   export default {
     components: {
@@ -65,6 +69,7 @@
       UserTable
     },
     watch: {
+      /*
       inputValue: function(){
         console.log(this.inputToken);
         if (this.inputToken == this.tokens[0] && this.outputToken == this.tokens[1]){ //tokenA to tokenB
@@ -73,6 +78,7 @@
           this.outputValue = 0.5*this.inputValue;
         }
       }
+      */
     },
     data() {
       return {
@@ -81,6 +87,10 @@
         ],
         inputValue:null,
         outputValue:null,
+        inputToken:null,
+        outputToken:null,
+        approveSwap:false,
+        defaultAccount:null,
         blueBarChart: {
           extraOptions: chartConfigs.barChartOptions,
           chartData: {
@@ -102,17 +112,48 @@
     },
     
     methods: {
-     approveContract: function(){
-       console.log('APROVE FUNCTION');
+      approveContract: function(){
+      
+      var that = this;
+      var approveButton = function(){that.approveSwap = true};
 
-        if (typeof web3 !== 'undefined') {
-        web3 = new Web3(window.ethereum);
-    } else {
-        console.log('No web3? You should consider trying MetaMask!');
-        web3 = new Web3(new window.ethereum.HttpProvider('http://localhost:8080'));
-    }
-     },
+      window.ethereum.enable().then(function(){
+        web3.eth.getAccounts(function(err, result){
+          if (!err){
+              that.defaultAccount = result[0];
 
+              if (that.inputToken == that.tokens[0]){ //A
+                var inputContract = new web3.eth.Contract(contractsInfo.tokenAContract.abi, contractsInfo.tokenAContract.address);
+                inputContract.methods.approve(contractsInfo.routerContract.address, that.inputValue).send({from: that.defaultAccount});
+              } else {
+                var inputContract = new web3.eth.Contract(contractsInfo.tokenBContract.abi, contractsInfo.tokenBContract.address);
+                inputContract.methods.approve(contractsInfo.routerContract.address, that.inputValue).send({from: that.defaultAccount});
+              }
+            approveButton();
+          }
+        })
+      })
+      },
+      swapTokens: function(){
+        console.log(this.inputValue, this.inputToken, this.outputValue, this.outputToken);
+        var path = []
+
+        if (inputValue == this.tokens[0]){ //tokenA --> tokenB
+          var inputTokenContract = new web3.eth.Contract(contractsInfo.tokenAContract.abi, contractsInfo.tokenAContract.address.toString().toLowerCase());
+          var outputTokenContract = new web3.eth.Contract(contractsInfo.tokenBContract.abi, contractsInfo.tokenBContract.address.toString().toLowerCase());
+          path = [contractsInfo.tokenAContract.address.toString().toLowerCase(), contractsInfo.tokenBContract.address.toString().toLowerCase()]
+        } else { //tokenB --> tokenA
+          var inputTokenContract = new web3.eth.Contract(contractsInfo.tokenBContract.abi, contractsInfo.tokenBContract.address.toString().toLowerCase());
+          var outputTokenContract = new web3.eth.Contract(contractsInfo.tokenAContract.abi, contractsInfo.tokenAContract.address.toString().toLowerCase());
+          path = [contractsInfo.tokenBContract.address.toString().toLowerCase(), contractsInfo.tokenAContract.address.toString().toLowerCase()]
+        }
+    
+        var contractRouter = new web3.eth.Contract(contractsInfo.routerContract.abi, contractsInfo.routerContract.address);
+
+        contractRouter.methods.swapExactTokensForTokens(this.inputValue, 0, path, this.defaultAccount, "0xFFFFFFFFFFFFFFFFFFF").send({
+              from: this.defaultAccount,
+        });
+     }
     },
     
   };
