@@ -34,11 +34,14 @@
           <div class="col-md-5 pr-md-1">
             
           </div>
-          <input v-model="outputValue" id="outputValue"></input>
+          <input @change="updateConversionValue()" v-model="outputValue" id="outputValue"></input>
           <select name="tokens" v-model="outputToken" id="outputToken">
             <option v-for="token in tokens">{{token}}</option>
           </select>
           <br>
+          <br>
+          <h5> 0 tokenA per tokenB </h5>
+
           <button @click="approveContract()" :disabled="approveSwap">1. Approve Swap</button>
           <button @click="swapTokens()" :disabled="!approveSwap">2. Swap</button>
 
@@ -153,6 +156,38 @@
         contractRouter.methods.swapExactTokensForTokens(this.inputValue, 0, path, this.defaultAccount, "0xFFFFFFFFFFFFFFFFFFF").send({
               from: this.defaultAccount,
         });
+     }, 
+     updateConversionValue: function(){
+       var contractRouter = new web3.eth.Contract(contractsInfo.routerContract.abi, contractsInfo.routerContract.address);
+
+        if (this.inputToken == this.tokens[0] && this.outputToken == this.tokens[1]){
+            const TOKEN1_ADDRESS = contractsInfo.tokenAContract.address;
+            const TOKEN2_ADDRESS = contractsInfo.tokenBContract.address;
+            const path = [TOKEN1_ADDRESS, TOKEN2_ADDRESS];
+        } else if (this.inputToken == this.tokens[1] && this.outputToken == this.tokens[0]) {
+            const TOKEN1_ADDRESS = contractsInfo.tokenBContract.address;
+            const TOKEN2_ADDRESS = contractsInfo.tokenAContract.address;
+            const path = [TOKEN1_ADDRESS, TOKEN2_ADDRESS];
+        } 
+
+        //The amount I would like to receive, array of addresses used to exchange [wethAddress, tokenAddress]
+        this.inputValue = contractRouter.methods.getAmountsIn(this.outputValue, path)
+
+
+        /*
+        const txn = await uniswapV2Contract.swapExactETHForTokens(
+          0,
+          path,
+          user.address,
+          expiryDate,
+          {
+              gasLimit: 1000000,
+              gasPrice: ethers.utils.parseUnits("10", "gwei"),
+              value: ethAmount
+          }
+        )
+        const res = await txn.wait();
+        */
      }
     },
     
