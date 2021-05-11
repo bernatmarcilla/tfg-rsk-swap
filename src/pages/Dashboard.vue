@@ -113,7 +113,26 @@
         }
       }
     },
-    
+    watch: {
+      inputValue: function(){
+        //alert(this.inputToken, );
+        var contractRouter = new web3.eth.Contract(contractsInfo.routerContract.abi, contractsInfo.routerContract.address);
+        var path = [];
+        if (this.inputToken == this.tokens[0] && this.outputToken == this.tokens[1]){ //tokenA --> tokenB
+          var inputTokenContract = new web3.eth.Contract(contractsInfo.tokenAContract.abi, contractsInfo.tokenAContract.address.toString().toLowerCase());
+          var outputTokenContract = new web3.eth.Contract(contractsInfo.tokenBContract.abi, contractsInfo.tokenBContract.address.toString().toLowerCase());
+          path = [contractsInfo.tokenAContract.address.toString().toLowerCase(), contractsInfo.tokenBContract.address.toString().toLowerCase()]
+        
+          let stringValue = String(this.inputValue.toString()+'000000000000000000'); 
+        
+          var that = this;
+          contractRouter.methods.getAmountsIn(stringValue, path).call(function(err, result){
+            that.outputValue = result[0]/(10**18);
+            //TODO revisar aquesta conversio de divisio
+          })
+        }
+      }
+    },
     methods: {
       approveContract: function(){
       
@@ -142,21 +161,32 @@
         console.log(this.inputValue, this.inputToken, this.outputValue, this.outputToken);
         var path = []
 
-        if (inputValue == this.tokens[0]){ //tokenA --> tokenB
+        var contractRouter = new web3.eth.Contract(contractsInfo.routerContract.abi, contractsInfo.routerContract.address);
+
+        if (this.inputToken == this.tokens[0] && this.outputValue == this.tokens[1]){ //tokenA --> tokenB
           var inputTokenContract = new web3.eth.Contract(contractsInfo.tokenAContract.abi, contractsInfo.tokenAContract.address.toString().toLowerCase());
           var outputTokenContract = new web3.eth.Contract(contractsInfo.tokenBContract.abi, contractsInfo.tokenBContract.address.toString().toLowerCase());
           path = [contractsInfo.tokenAContract.address.toString().toLowerCase(), contractsInfo.tokenBContract.address.toString().toLowerCase()]
+        
+          let stringValue = String(this.inputValue.toString()+'000000000000000000'); 
+        
+          var that = this;
+          contractRouter.methods.getAmountsIn(stringValue, path).call(function(err, result){
+            that.outputValue = result[0]/(10**18);
+            //TODO revisar aquesta conversio de divisio
+          })
+        
         } else { //tokenB --> tokenA
           var inputTokenContract = new web3.eth.Contract(contractsInfo.tokenBContract.abi, contractsInfo.tokenBContract.address.toString().toLowerCase());
           var outputTokenContract = new web3.eth.Contract(contractsInfo.tokenAContract.abi, contractsInfo.tokenAContract.address.toString().toLowerCase());
           path = [contractsInfo.tokenBContract.address.toString().toLowerCase(), contractsInfo.tokenAContract.address.toString().toLowerCase()]
         }
     
-        var contractRouter = new web3.eth.Contract(contractsInfo.routerContract.abi, contractsInfo.routerContract.address);
-
+        /*
         contractRouter.methods.swapExactTokensForTokens(this.inputValue, 0, path, this.defaultAccount, "0xFFFFFFFFFFFFFFFFFFF").send({
               from: this.defaultAccount,
         });
+        */
      }, 
      updateConversionValue: function(){
        var contractRouter = new web3.eth.Contract(contractsInfo.routerContract.abi, contractsInfo.routerContract.address);
