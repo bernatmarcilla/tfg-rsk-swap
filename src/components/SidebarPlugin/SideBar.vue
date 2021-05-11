@@ -46,7 +46,7 @@
     props: {
       title: {
         type: String,
-        default: "Ergo Swap"
+        default: "BARRIO Swap"
       },
       backgroundColor: {
         type: String,

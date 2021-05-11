@@ -124,13 +124,14 @@
         web3.eth.getAccounts(function(err, result){
           if (!err){
               that.defaultAccount = result[0];
+              var fullValue = that.inputValue * 10^18;
 
               if (that.inputToken == that.tokens[0]){ //A
                 var inputContract = new web3.eth.Contract(contractsInfo.tokenAContract.abi, contractsInfo.tokenAContract.address);
-                inputContract.methods.approve(contractsInfo.routerContract.address, that.inputValue).send({from: that.defaultAccount});
+                inputContract.methods.approve(contractsInfo.routerContract.address, fullValue).send({from: that.defaultAccount});
               } else {
                 var inputContract = new web3.eth.Contract(contractsInfo.tokenBContract.abi, contractsInfo.tokenBContract.address);
-                inputContract.methods.approve(contractsInfo.routerContract.address, that.inputValue).send({from: that.defaultAccount});
+                inputContract.methods.approve(contractsInfo.routerContract.address, fullValue).send({from: that.defaultAccount});
               }
             approveButton();
           }

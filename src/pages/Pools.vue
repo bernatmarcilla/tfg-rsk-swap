@@ -4,18 +4,18 @@
           <template slot="header">
             <h3 class="card-title"><i class="tim-icons icon-coins"></i> TokenA Liquidity Pool</h3>
           </template>
-          <input id="inputValue"></input>
+          <input v-model="inputValueA" id="inputValue"></input>
           
           <select name="tokens" id="inputToken">
-            <option v-for="token in tokens">{{token}}</option>
+            <option>{{tokens[0]}}</option>
           </select>
           
           <div class="col-md-5 pr-md-1">
             
           </div>
-          <input id="outputValue"></input>
+          <input v-model="outputValueA"></input>
           <select name="tokens" id="outputToken">
-            <option v-for="token in tokens">{{token}}</option>
+            <option>RBTC</option>
           </select>
           <br>
           <button @click="approveContract('A')" :disabled="approvePoolA">1. Approve Swap</button>
@@ -29,7 +29,7 @@
           <input id="inputValue"></input>
           
           <select name="tokens" id="inputToken">
-            <option v-for="token in tokens">{{token}}</option>
+            <option>{{tokens[1]}}</option>
           </select>
           
           <div class="col-md-5 pr-md-1">
@@ -37,7 +37,7 @@
           </div>
           <input id="outputValue"></input>
           <select name="tokens" id="outputToken">
-            <option v-for="token in tokens">{{token}}</option>
+            <option>RBTC</option>
           </select>
           <br>
           <button @click="approveContract('B')" :disabled="approvePoolB">1. Approve Swap</button>
@@ -66,13 +66,19 @@
       UserTable
     },
     watch: {
-      inputValue: function(){
-        console.log(this.inputToken);
-        if (this.inputToken == this.tokens[0] && this.outputToken == this.tokens[1]){ //tokenA to tokenB
-          this.outputValue=2*this.inputValue;
-        } else if (this.inputToken == this.tokens[1] && this.outputToken == this.tokens[0]){ //tokenB to tokenA
-          this.outputValue = 0.5*this.inputValue;
-        }
+      inputValueA: function(){
+        var contractRouter = new web3.eth.Contract(contractsInfo.routerContract.abi, contractsInfo.routerContract.address);
+        const WRBTC_ADDRESS = "0x09B6Ca5E4496238a1F176aEA6bB607db96C2286E";
+        const TOKEN2_ADDRESS = contractsInfo.tokenAContract.address;
+        const path = [WRBTC_ADDRESS, TOKEN2_ADDRESS];
+        
+        var that = this;
+        let stringValue = String(this.inputValueA.toString()+'000000000000000000'); 
+        
+        contractRouter.methods.getAmountsIn(stringValue, path).call(function(err, result){
+          that.outputValueA = result[0]/(10**18);
+          //TODO revisar aquesta conversio de divisio
+        })
       }
     },
     data() {
@@ -97,6 +103,8 @@
         outputValue:null,
         approvePoolA: false,
         approvePoolB: false,
+        inputValueA:null,
+        outputValueA:null
       }
     },
     created: function(){
@@ -175,6 +183,14 @@
         })
       })
     },
+    estimatedOutputValue: function(pool){
+      //var contractRouter = new web3.eth.Contract(this.routerContract.abi, this.routerContract.address);
+
+      if (pool == this.tokens[0]) //tokenA
+      alert(value);
+      //contractRouter.methods.getAmountsIn()
+
+    }
     },
     
   };
