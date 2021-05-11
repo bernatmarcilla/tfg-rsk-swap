@@ -184,7 +184,7 @@
         }
     
         /*
-        contractRouter.methods.swapExactTokensForTokens(this.inputValue, 0, path, this.defaultAccount, "0xFFFFFFFFFFFFFFFFFFF").send({
+        contractRouter.methods.swapExactTokensForTokens(this.inputValue, 0, path, this.defaultAccount, "0xFFFFFFFFFF").send({
               from: this.defaultAccount,
         });
         */
