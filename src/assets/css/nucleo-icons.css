@@ -32,6 +32,10 @@ Created using IcoMoon - icomoon.io
   -moz-osx-font-smoothing: grayscale;
 }
 
+.swap-arrow {
+  color: red;
+}
+
 .font-icon-detail {
   text-align: center;
   padding: 45px 0 30px;

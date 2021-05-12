@@ -18,6 +18,7 @@
     </slot>
     <slot>
       <input
+        style="font-size:17px;"
         :value="value"
         v-bind="$attrs"
         v-on="listeners"

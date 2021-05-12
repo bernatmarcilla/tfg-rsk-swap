@@ -23,7 +23,9 @@
         </card>
         <card type="chart">
           <template slot="header">
-            <h3 class="card-title"><i class="tim-icons icon-coins"></i> Swap ERC20 Tokens</h3>
+            <h3 style="display: table;
+                        margin: 0 auto;" 
+                class="card-title"><i class="tim-icons icon-coins"></i> Swap ERC20 Tokens</h3>
           </template>
           <input v-model="inputValue" id="inputValue"></input>
           
@@ -41,6 +43,26 @@
           <br>
           <br>
           <h5> 0 tokenA per tokenB </h5>
+
+          <base-input
+                  v-model="inputValue"
+                  placeholder="Input Token">
+          </base-input>
+          
+          
+          <h1 style="display: flex;
+              font-size:20px;
+              margin-bottom:20px;
+              margin-top:15px;
+              display: table;
+              margin: 0 auto;" 
+              class="swap-arroy tim-icons icon-minimal-down"></h1>
+
+          <base-input v-model="outputValue"
+                  placeholder="Output Token">
+          </base-input>
+
+          <h5>  <i style="color:#2dce89" v-if="this.conversionValue" class="tim-icons icon-alert-circle-exc"></i>  {{this.conversionValue}}{{this.conversionTokens}}</h5>
 
           <button @click="approveContract()" :disabled="approveSwap">1. Approve Swap</button>
           <button @click="swapTokens()">2. Swap</button>
@@ -72,16 +94,6 @@
       UserTable
     },
     watch: {
-      /*
-      inputValue: function(){
-        console.log(this.inputToken);
-        if (this.inputToken == this.tokens[0] && this.outputToken == this.tokens[1]){ //tokenA to tokenB
-          this.outputValue=2*this.inputValue;
-        } else if (this.inputToken == this.tokens[1] && this.outputToken == this.tokens[0]){ //tokenB to tokenA
-          this.outputValue = 0.5*this.inputValue;
-        }
-      }
-      */
     },
     data() {
       return {
@@ -94,6 +106,8 @@
         outputToken:null,
         approveSwap:false,
         defaultAccount:null,
+        conversionValue:null,
+        conversionTokens:null,
         blueBarChart: {
           extraOptions: chartConfigs.barChartOptions,
           chartData: {
@@ -121,8 +135,10 @@
         if (this.inputValue == ''){
           this.outputValue = '';
         } else if (this.inputToken == this.tokens[0] && this.outputToken == this.tokens[1]){ //tokenA --> tokenB
+          this.conversionTokens = ' tokenB per tokenA';
           path = [contractsInfo.tokenBContract.address.toString().toLowerCase(), contractsInfo.tokenAContract.address.toString().toLowerCase()]
         } else if (this.inputToken == this.tokens[1] && this.outputToken == this.tokens[0]){ // tokenB --> tokenA
+          this.conversionTokens = ' tokenA per tokenB';
           path = [contractsInfo.tokenAContract.address.toString().toLowerCase(), contractsInfo.tokenBContract.address.toString().toLowerCase()]
         }
         let stringValue = String(this.inputValue.toString()+'000000000000000000'); 
@@ -130,6 +146,7 @@
         var that = this;
         contractRouter.methods.getAmountsIn(stringValue, path).call(function(err, result){
           that.outputValue = result[0]/(10**18);
+          that.conversionValue = (result[0]/(10**18))/that.inputValue;
             //TODO revisar aquesta conversio de divisio
         })
       }
@@ -168,7 +185,6 @@
 
         if (this.inputToken == this.tokens[0] && this.outputToken == this.tokens[1]){ //tokenA --> tokenB
           path = [contractsInfo.tokenAContract.address.toString().toLowerCase(), contractsInfo.tokenBContract.address.toString().toLowerCase()]
-        
         } else { //tokenB --> tokenA
           path = [contractsInfo.tokenBContract.address.toString().toLowerCase(), contractsInfo.tokenAContract.address.toString().toLowerCase()]
         }
