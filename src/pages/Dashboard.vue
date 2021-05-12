@@ -43,8 +43,8 @@
           <h5> 0 tokenA per tokenB </h5>
 
           <button @click="approveContract()" :disabled="approveSwap">1. Approve Swap</button>
-          <button @click="swapTokens()" :disabled="!approveSwap">2. Swap</button>
-
+          <button @click="swapTokens()">2. Swap</button>
+          <!-- :disabled="!approveSwap" -->
         </card>
       </div>
       
@@ -121,9 +121,9 @@
         if (this.inputValue == ''){
           this.outputValue = '';
         } else if (this.inputToken == this.tokens[0] && this.outputToken == this.tokens[1]){ //tokenA --> tokenB
-          path = [contractsInfo.tokenAContract.address.toString().toLowerCase(), contractsInfo.tokenBContract.address.toString().toLowerCase()]
-        } else if (this.inputToken == this.tokens[1] && this.outputToken == this.tokens[0]){ // tokenB --> tokenA
           path = [contractsInfo.tokenBContract.address.toString().toLowerCase(), contractsInfo.tokenAContract.address.toString().toLowerCase()]
+        } else if (this.inputToken == this.tokens[1] && this.outputToken == this.tokens[0]){ // tokenB --> tokenA
+          path = [contractsInfo.tokenAContract.address.toString().toLowerCase(), contractsInfo.tokenBContract.address.toString().toLowerCase()]
         }
         let stringValue = String(this.inputValue.toString()+'000000000000000000'); 
         
@@ -144,14 +144,15 @@
         web3.eth.getAccounts(function(err, result){
           if (!err){
               that.defaultAccount = result[0];
-              var fullValue = that.inputValue * 10^18;
+
+              let stringValue = String(that.inputValue.toString()+'000000000000000000'); 
 
               if (that.inputToken == that.tokens[0]){ //A
                 var inputContract = new web3.eth.Contract(contractsInfo.tokenAContract.abi, contractsInfo.tokenAContract.address);
-                inputContract.methods.approve(contractsInfo.routerContract.address, fullValue).send({from: that.defaultAccount});
+                inputContract.methods.approve(contractsInfo.routerContract.address, stringValue).send({from: that.defaultAccount});
               } else {
                 var inputContract = new web3.eth.Contract(contractsInfo.tokenBContract.abi, contractsInfo.tokenBContract.address);
-                inputContract.methods.approve(contractsInfo.routerContract.address, fullValue).send({from: that.defaultAccount});
+                inputContract.methods.approve(contractsInfo.routerContract.address, stringValue).send({from: that.defaultAccount});
               }
             approveButton();
           }
@@ -159,37 +160,23 @@
       })
       },
       swapTokens: function(){
-        console.log(this.inputValue, this.inputToken, this.outputValue, this.outputToken);
+        //console.log(this.inputValue, this.inputToken, this.outputValue, this.outputToken);
         var path = []
 
         var contractRouter = new web3.eth.Contract(contractsInfo.routerContract.abi, contractsInfo.routerContract.address);
+        let stringValue = String(this.inputValue.toString()+'000000000000000000'); 
 
-        if (this.inputToken == this.tokens[0] && this.outputValue == this.tokens[1]){ //tokenA --> tokenB
-          var inputTokenContract = new web3.eth.Contract(contractsInfo.tokenAContract.abi, contractsInfo.tokenAContract.address.toString().toLowerCase());
-          var outputTokenContract = new web3.eth.Contract(contractsInfo.tokenBContract.abi, contractsInfo.tokenBContract.address.toString().toLowerCase());
+        if (this.inputToken == this.tokens[0] && this.outputToken == this.tokens[1]){ //tokenA --> tokenB
           path = [contractsInfo.tokenAContract.address.toString().toLowerCase(), contractsInfo.tokenBContract.address.toString().toLowerCase()]
         
-          let stringValue = String(this.inputValue.toString()+'000000000000000000'); 
-        
-          var that = this;
-          contractRouter.methods.getAmountsIn(stringValue, path).call(function(err, result){
-            that.outputValue = result[0]/(10**18);
-            //TODO revisar aquesta conversio de divisio
-          })
-        
         } else { //tokenB --> tokenA
-          var inputTokenContract = new web3.eth.Contract(contractsInfo.tokenBContract.abi, contractsInfo.tokenBContract.address.toString().toLowerCase());
-          var outputTokenContract = new web3.eth.Contract(contractsInfo.tokenAContract.abi, contractsInfo.tokenAContract.address.toString().toLowerCase());
           path = [contractsInfo.tokenBContract.address.toString().toLowerCase(), contractsInfo.tokenAContract.address.toString().toLowerCase()]
         }
     
-        /*
-        contractRouter.methods.swapExactTokensForTokens(this.inputValue, 0, path, this.defaultAccount, "0xFFFFFFFFFF").send({
-              from: this.defaultAccount,
-        });
-        */
-     }, 
-     updateConversionValue: function(){
+        var that = this;
+        contractRouter.methods.swapExactTokensForTokens(stringValue, 0, path, that.defaultAccount, '0xFFFFFFFFFF').send({from: that.defaultAccount});
+      }, 
+      updateConversionValue: function(){
        var contractRouter = new web3.eth.Contract(contractsInfo.routerContract.abi, contractsInfo.routerContract.address);
 
         if (this.inputToken == this.tokens[0] && this.outputToken == this.tokens[1]){
