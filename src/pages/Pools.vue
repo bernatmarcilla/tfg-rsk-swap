@@ -1,48 +1,74 @@
 <template>
     <div class="row">
     <card type="chart">
-          <template slot="header">
-            <h3 class="card-title"><i class="tim-icons icon-coins"></i> TokenA Liquidity Pool</h3>
-          </template>
-          <input v-model="inputValueA" id="inputValue"></input>
-          
-          <select name="tokens" id="inputToken">
-            <option>{{tokens[0]}}</option>
-          </select>
-          
-          <div class="col-md-5 pr-md-1">
-            
-          </div>
-          <input v-model="outputValueA"></input>
-          <select name="tokens" id="outputToken">
-            <option>RBTC</option>
-          </select>
+        <template slot="header">
+          <h3 style="display: table;
+                      margin: 0 auto;"
+              class="card-title"><i class="tim-icons icon-coins"></i> TokenA Liquidity Pool</h3>
+        </template>
+        <base-input v-model="inputValue"
+                placeholder="Input">
+        </base-input>
+        <select name="tokens" id="inputToken">
+          <option>{{tokens[0]}}</option>
+        </select>
+        
+        <h1 style="display: flex;
+            font-size:20px;
+            margin-top:15px;
+            display: table;
+            margin: 0 auto;" 
+            class="swap-arroy tim-icons icon-simple-add"></h1>
+
+        <base-input Style="margin-top:35px; font-size:17px;" v-model="outputValue"
+                placeholder="Input">
+        </base-input>
+
+        <select name="tokens" id="outputToken">
+          <option>RBTC</option>
+        </select>
           <br>
-          <button @click="approveContract('A')" :disabled="approvePoolA">1. Approve Swap</button>
-          <button @click="addLiquidity()" :disabled="!approvePoolA">2. Swap</button>
+          <div id="buttons" style="display: table;margin: 0 auto;">
+            <base-button @click="approveContract('A')" type="primary" :disabled="approvePoolA" fill> 1. Approve Contract </base-button>
+            <base-button @click="swapTokens()" type="primary" :disabled="!approvePoolA" fill> 2. Add Liquidity </base-button>
+          </div>
 
     </card>
-        <card type="chart">
-          <template slot="header">
-            <h3 class="card-title"><i class="tim-icons icon-coins"></i> TokenB Liquidity Pool</h3>
-          </template>
-          <input id="inputValue"></input>
-          
-          <select name="tokens" id="inputToken">
-            <option>{{tokens[1]}}</option>
-          </select>
-          
-          <div class="col-md-5 pr-md-1">
-            
-          </div>
-          <input id="outputValue"></input>
-          <select name="tokens" id="outputToken">
-            <option>RBTC</option>
-          </select>
-          <br>
-          <button @click="approveContract('B')" :disabled="approvePoolB">1. Approve Swap</button>
-          <button @click="addLiquidity()" :disabled="!approvePoolB">2. Swap</button>
+    
+    <card type="chart">
+        <template slot="header">
+          <h3 style="display: table;
+                      margin: 0 auto;"
+              class="card-title"><i class="tim-icons icon-coins"></i> TokenB Liquidity Pool</h3>
+        </template>
+        <base-input v-model="inputValue"
+                placeholder="Input">
+        </base-input>
+        <select name="tokens" id="inputToken">
+          <option>{{tokens[1]}}</option>
+        </select>
+        
+        <h1 style="display: flex;
+            font-size:20px;
+            margin-bottom:20px;
+            margin-top:15px;
+            display: table;
+            margin: 0 auto;" 
+            class="swap-arroy tim-icons icon-simple-add"></h1>
 
+        <base-input Style="margin-top:35px; font-size:17px;" v-model="outputValue"
+                placeholder="Input">
+        </base-input>
+
+        <select name="tokens" id="outputToken">
+          <option>RBTC</option>
+        </select>
+
+        <br>
+        <div id="buttons" style="display: table;margin: 0 auto;">
+          <base-button @click="approveContract('B')" type="primary" :disabled="approvePoolB" fill> 1. Approve Contract </base-button>
+          <base-button @click="swapTokens()" type="primary" :disabled="!approvePoolB" fill> 2. Add Liquidity </base-button>
+        </div>
     </card>
     </div>
 </template>

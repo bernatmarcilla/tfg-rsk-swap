@@ -9,58 +9,32 @@
       <div class="col-lg-4" >
         <card type="chart">
           <template slot="header">
-            <h5 class="card-category">{{$t('dashboard.dailySales')}}</h5>
-            <h3 class="card-title"><i class="tim-icons icon-delivery-fast text-info "></i> 3,500€</h3>
-          </template>
-          <div class="chart-area">
-            <bar-chart style="height: 100%"
-                       chart-id="blue-bar-chart"
-                       :chart-data="blueBarChart.chartData"
-                       :gradient-stops="blueBarChart.gradientStops"
-                       :extra-options="blueBarChart.extraOptions">
-            </bar-chart>
-          </div>
-        </card>
-        <card type="chart">
-          <template slot="header">
             <h3 style="display: table;
                         margin: 0 auto;" 
                 class="card-title"><i class="tim-icons icon-coins"></i> Swap ERC20 Tokens</h3>
           </template>
-          <input v-model="inputValue" id="inputValue"></input>
-          
-          <select name="tokens" v-model="inputToken" id="inputToken">
-            <option v-for="token in tokens">{{token}}</option>
-          </select>
-          
-          <div class="col-md-5 pr-md-1">
-            
-          </div>
-          <input @change="updateConversionValue()" v-model="outputValue" id="outputValue"></input>
-          <select name="tokens" v-model="outputToken" id="outputToken">
-            <option v-for="token in tokens">{{token}}</option>
-          </select>
           <br>
-          <br>
-          <h5> 0 tokenA per tokenB </h5>
-
           <base-input
                   v-model="inputValue"
                   placeholder="Input Token">
           </base-input>
-          
+          <select name="tokens" v-model="inputToken" id="inputToken">
+            <option v-for="token in tokens">{{token}}</option>
+          </select>
           
           <h1 style="display: flex;
               font-size:20px;
-              margin-bottom:20px;
               margin-top:15px;
               display: table;
               margin: 0 auto;" 
               class="swap-arroy tim-icons icon-minimal-down"></h1>
 
-          <base-input v-model="outputValue"
+          <base-input style="margin-top:35px;" v-model="outputValue"
                   placeholder="Output Token">
           </base-input>
+          <select name="tokens" v-model="inputToken" id="inputToken">
+            <option v-for="token in tokens">{{token}}</option>
+          </select>
 
           <h5>  <i style="color:#2dce89" v-if="this.conversionValue" class="tim-icons icon-alert-circle-exc"></i>  {{this.conversionValue}}{{this.conversionTokens}}</h5>
 
@@ -69,6 +43,7 @@
             <base-button @click="approveContract()" type="primary" :disabled="approveSwap" fill> 1. Approve Swap </base-button>
             <base-button @click="swapTokens()" type="primary" :disabled="!approveSwap" fill> 2. Swap </base-button>
           </div>
+
         </card>
       </div>
       
