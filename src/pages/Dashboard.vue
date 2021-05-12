@@ -64,9 +64,11 @@
 
           <h5>  <i style="color:#2dce89" v-if="this.conversionValue" class="tim-icons icon-alert-circle-exc"></i>  {{this.conversionValue}}{{this.conversionTokens}}</h5>
 
-          <button @click="approveContract()" :disabled="approveSwap">1. Approve Swap</button>
-          <button @click="swapTokens()">2. Swap</button>
-          <!-- :disabled="!approveSwap" -->
+          <br>
+          <div id="buttons" style="display: table;margin: 0 auto;">
+            <base-button @click="approveContract()" type="primary" :disabled="approveSwap" fill> 1. Approve Swap </base-button>
+            <base-button @click="swapTokens()" type="primary" :disabled="!approveSwap" fill> 2. Swap </base-button>
+          </div>
         </card>
       </div>
       
