@@ -36,7 +36,7 @@
             <option v-for="token in tokens">{{token}}</option>
           </select>
 
-          <h5>  <i style="color:#2dce89" v-if="this.conversionValue" class="tim-icons icon-alert-circle-exc"></i>  {{this.conversionValue}}{{this.conversionTokens}}</h5>
+          <h5><i style="color:#2dce89" v-if="this.conversionValue" class="tim-icons icon-alert-circle-exc"></i>  {{this.conversionValue}}{{this.conversionTokens}}</h5>
 
           <br>
           <div id="buttons" style="display: table;margin: 0 auto;">
@@ -52,11 +52,6 @@
   </div>
 </template>
 <script>
-  import LineChart from '@/components/Charts/LineChart';
-  import BarChart from '@/components/Charts/BarChart';
-  import * as chartConfigs from '@/components/Charts/config';
-  import TaskList from './Dashboard/TaskList';
-  import UserTable from './Dashboard/UserTable';
   import config from '@/config';
   import contractsInfo from './../plugins/contractsInfo.js'
 
@@ -64,14 +59,6 @@
   web3 = new Web3(window.ethereum);
 
   export default {
-    components: {
-      LineChart,
-      BarChart,
-      TaskList,
-      UserTable
-    },
-    watch: {
-    },
     data() {
       return {
         tokens: [

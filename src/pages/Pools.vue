@@ -73,11 +73,6 @@
     </div>
 </template>
 <script>
-  import LineChart from '@/components/Charts/LineChart';
-  import BarChart from '@/components/Charts/BarChart';
-  import * as chartConfigs from '@/components/Charts/config';
-  import TaskList from './Dashboard/TaskList';
-  import UserTable from './Dashboard/UserTable';
   import config from '@/config';
   import contractsInfo from './../plugins/contractsInfo.js'
 
@@ -86,10 +81,6 @@
 
   export default {
     components: {
-      LineChart,
-      BarChart,
-      TaskList,
-      UserTable
     },
     watch: {
       inputValueA: function(){
