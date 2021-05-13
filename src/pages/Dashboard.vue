@@ -36,7 +36,12 @@
             <option v-for="token in tokens">{{token}}</option>
           </select>
 
-          <h5><i style="color:#2dce89" v-if="this.conversionValue" class="tim-icons icon-alert-circle-exc"></i>  {{this.conversionValue}}{{this.conversionTokens}}</h5>
+          <br>
+          <br>
+
+          <div>
+            <h5><i style="color:#2dce89" v-if="this.conversionValue" class="tim-icons icon-alert-circle-exc"></i> <span class="text-success"> {{this.conversionValue}}{{this.conversionTokens}}</span></h5>
+          </div>
 
           <br>
           <div id="buttons" style="display: table;margin: 0 auto;">

@@ -123,13 +123,16 @@
       calculateConversion: function(pool){
         console.log('calculateConversionFunction');
           var TOKEN2_ADDRESS='';
+          let stringValue='';
           if (pool == this.tokens[0]) //tokenA
           {
             TOKEN2_ADDRESS = contractsInfo.tokenAContract.address;
             this.replaceValue = function(value){that.outputValueA = value;};
+            stringValue = String(this.inputValueA.toString()+'000000000000000000'); 
           } else { //tokenB
             TOKEN2_ADDRESS = contractsInfo.tokenBContract.address;
             this.replaceValue = function(value){that.outputValueB = value;};
+            stringValue = String(this.inputValueB.toString()+'000000000000000000'); 
           }
 
           const WRBTC_ADDRESS = "0x09B6Ca5E4496238a1F176aEA6bB607db96C2286E";
@@ -137,7 +140,6 @@
           var contractRouter = new web3.eth.Contract(contractsInfo.routerContract.abi, contractsInfo.routerContract.address);
 
           var that = this;
-          let stringValue = String(this.inputValueA.toString()+'000000000000000000'); 
           contractRouter.methods.getAmountsIn(stringValue, path).call(function(err, result){
             if (!err){
               var new_res = result[0]/(10**18);
