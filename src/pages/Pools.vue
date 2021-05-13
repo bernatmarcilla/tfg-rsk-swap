@@ -6,13 +6,13 @@
                       margin: 0 auto;"
               class="card-title"><i class="tim-icons icon-coins"></i> TokenA Liquidity Pool</h3>
         </template>
-        <base-input v-model="inputValue"
+        <base-input v-model="inputValueA"
                 placeholder="Input">
         </base-input>
         <select name="tokens" id="inputToken">
           <option>{{tokens[0]}}</option>
         </select>
-        
+
         <h1 style="display: flex;
             font-size:20px;
             margin-top:15px;
@@ -20,7 +20,7 @@
             margin: 0 auto;" 
             class="swap-arroy tim-icons icon-simple-add"></h1>
 
-        <base-input Style="margin-top:35px; font-size:17px;" v-model="outputValue"
+        <base-input Style="margin-top:35px; font-size:17px;" v-model="outputValueA"
                 placeholder="Input">
         </base-input>
 
@@ -41,7 +41,7 @@
                       margin: 0 auto;"
               class="card-title"><i class="tim-icons icon-coins"></i> TokenB Liquidity Pool</h3>
         </template>
-        <base-input v-model="inputValue"
+        <base-input v-model="inputValueB"
                 placeholder="Input">
         </base-input>
         <select name="tokens" id="inputToken">
@@ -56,7 +56,7 @@
             margin: 0 auto;" 
             class="swap-arroy tim-icons icon-simple-add"></h1>
 
-        <base-input Style="margin-top:35px; font-size:17px;" v-model="outputValue"
+        <base-input Style="margin-top:35px; font-size:17px;" v-model="outputValueB"
                 placeholder="Input">
         </base-input>
 
@@ -84,18 +84,10 @@
     },
     watch: {
       inputValueA: function(){
-        var contractRouter = new web3.eth.Contract(contractsInfo.routerContract.abi, contractsInfo.routerContract.address);
-        const WRBTC_ADDRESS = "0x09B6Ca5E4496238a1F176aEA6bB607db96C2286E";
-        const TOKEN2_ADDRESS = contractsInfo.tokenAContract.address;
-        const path = [WRBTC_ADDRESS, TOKEN2_ADDRESS];
-        
-        var that = this;
-        let stringValue = String(this.inputValueA.toString()+'000000000000000000'); 
-        
-        contractRouter.methods.getAmountsIn(stringValue, path).call(function(err, result){
-          that.outputValueA = result[0]/(10**18);
-          //TODO revisar aquesta conversio de divisio
-        })
+        this.calculateConversion(this.tokens[0]);
+      },
+      inputValueB: function(){
+        this.calculateConversion(this.tokens[1]);
       }
     },
     data() {
@@ -121,18 +113,41 @@
         approvePoolA: false,
         approvePoolB: false,
         inputValueA:null,
-        outputValueA:null
+        outputValueA:null,
+        inputValueB:null,
+        outputValueB:null,
+        replaceValue:null
       }
     },
-    created: function(){
-      this.tokenAContractDeployed = new web3.eth.Contract(this.tokenA.abi, this.tokenA.address.toString().toLowerCase());
-      this.routerContractDeployed = new web3.eth.Contract(this.routerContract.abi, this.routerContract.address.toString().toLowerCase());
-
-      this.routerContract.address = '0xf55c496bb1058690DB1401c4b9C19F3f44374961';
-    },
     methods: {
+      calculateConversion: function(pool){
+        console.log('calculateConversionFunction');
+          var TOKEN2_ADDRESS='';
+          if (pool == this.tokens[0]) //tokenA
+          {
+            TOKEN2_ADDRESS = contractsInfo.tokenAContract.address;
+            this.replaceValue = function(value){that.outputValueA = value;};
+          } else { //tokenB
+            TOKEN2_ADDRESS = contractsInfo.tokenBContract.address;
+            this.replaceValue = function(value){that.outputValueB = value;};
+          }
+
+          const WRBTC_ADDRESS = "0x09B6Ca5E4496238a1F176aEA6bB607db96C2286E";
+          const path = [WRBTC_ADDRESS, TOKEN2_ADDRESS];
+          var contractRouter = new web3.eth.Contract(contractsInfo.routerContract.abi, contractsInfo.routerContract.address);
+
+          var that = this;
+          let stringValue = String(this.inputValueA.toString()+'000000000000000000'); 
+          contractRouter.methods.getAmountsIn(stringValue, path).call(function(err, result){
+            if (!err){
+              var new_res = result[0]/(10**18);
+              console.log(new_res);
+              that.replaceValue(new_res);
+            //TODO revisar aquesta conversio de divisio
+            }
+          })
+      },
      addLiquidity: function(){
-        console.log('APROVE FUNCTION');
 
         if (window.ethereum) {
             

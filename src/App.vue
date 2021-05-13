@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <h1><span style="text-colr:red;">This is the page Header</span> </h1>
+      <h1><span style="text-colr:red;">Demo RSK Swap</span> </h1>
     </div>
     <router-view :key="$route.fullPath"></router-view>
   </div>

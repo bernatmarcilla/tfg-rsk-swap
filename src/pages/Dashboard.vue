@@ -32,7 +32,7 @@
           <base-input style="margin-top:35px;" v-model="outputValue"
                   placeholder="Output Token">
           </base-input>
-          <select name="tokens" v-model="inputToken" id="inputToken">
+          <select name="tokens" v-model="outputToken" id="inputToken">
             <option v-for="token in tokens">{{token}}</option>
           </select>
 
@@ -72,23 +72,6 @@
         defaultAccount:null,
         conversionValue:null,
         conversionTokens:null,
-        blueBarChart: {
-          extraOptions: chartConfigs.barChartOptions,
-          chartData: {
-            labels: ['USA', 'GER', 'AUS', 'UK', 'RO', 'BR'],
-            datasets: [{
-              label: "Countries",
-              fill: true,
-              borderColor: config.colors.info,
-              borderWidth: 2,
-              borderDash: [],
-              borderDashOffset: 0.0,
-              data: [53, 20, 10, 80, 100, 45],
-            }]
-          },
-          gradientColors: config.colors.primaryGradient,
-          gradientStops: [1, 0.4, 0],
-        }
       }
     },
     watch: {
