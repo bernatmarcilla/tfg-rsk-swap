@@ -40,7 +40,7 @@
           <br>
 
           <div>
-            <h5><i style="color:#2dce89" v-if="this.conversionValue" class="tim-icons icon-alert-circle-exc"></i> <span class="text-success"> {{this.conversionValue}}{{this.conversionTokens}}</span></h5>
+            <h5><i style="color:#2dce89" v-if="this.conversionValue" class="tim-icons icon-alert-circle-exc"></i> <b v-if="this.conversionValue">Actual Price: </b> <span class="text-success"> {{this.conversionValue}}{{this.conversionTokens}}</span></h5>
           </div>
 
           <br>

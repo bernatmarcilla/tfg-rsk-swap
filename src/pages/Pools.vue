@@ -28,6 +28,12 @@
           <option>RBTC</option>
         </select>
           <br>
+          <br>
+
+          <div>
+            <h5><i style="color:#2dce89" v-if="this.conversionValueA" class="tim-icons icon-alert-circle-exc"></i> <span class="text-success"> <b v-if="this.conversionValueA">Actual Price: </b>{{this.conversionValueA}}{{this.conversionTokensA}}</span></h5>
+          </div>
+          <br>
           <div id="buttons" style="display: table;margin: 0 auto;">
             <base-button @click="approveContract('A')" type="primary" :disabled="approvePoolA" fill> 1. Approve Contract </base-button>
             <base-button @click="swapTokens()" type="primary" :disabled="!approvePoolA" fill> 2. Add Liquidity </base-button>
@@ -63,8 +69,13 @@
         <select name="tokens" id="outputToken">
           <option>RBTC</option>
         </select>
+          <br>
+          <br>
 
-        <br>
+          <div>
+            <h5><i style="color:#2dce89" v-if="this.conversionValueB" class="tim-icons icon-alert-circle-exc"></i> <span class="text-success"> <b v-if="this.conversionValueB">Actual Price: </b> {{this.conversionValueB}}{{this.conversionTokensB}}</span></h5>
+          </div>
+          <br>
         <div id="buttons" style="display: table;margin: 0 auto;">
           <base-button @click="approveContract('B')" type="primary" :disabled="approvePoolB" fill> 1. Approve Contract </base-button>
           <base-button @click="swapTokens()" type="primary" :disabled="!approvePoolB" fill> 2. Add Liquidity </base-button>
@@ -116,7 +127,11 @@
         outputValueA:null,
         inputValueB:null,
         outputValueB:null,
-        replaceValue:null
+        replaceValue:null,
+        conversionValueB:null,
+        conversionTokensA:null,
+        conversionTokensB:null,
+        conversionValueA:null
       }
     },
     methods: {
@@ -127,11 +142,11 @@
           if (pool == this.tokens[0]) //tokenA
           {
             TOKEN2_ADDRESS = contractsInfo.tokenAContract.address;
-            this.replaceValue = function(value){that.outputValueA = value;};
+            this.replaceValue = function(value){that.outputValueA = value; that.conversionValueA = value/that.inputValueA; that.conversionTokensA = ' RBTC per tokenA';};
             stringValue = String(this.inputValueA.toString()+'000000000000000000'); 
           } else { //tokenB
             TOKEN2_ADDRESS = contractsInfo.tokenBContract.address;
-            this.replaceValue = function(value){that.outputValueB = value;};
+            this.replaceValue = function(value){that.outputValueB = value; that.conversionValueB = value/that.inputValueB; that.conversionTokensB = ' RBTC per tokenB';};
             stringValue = String(this.inputValueB.toString()+'000000000000000000'); 
           }
 
