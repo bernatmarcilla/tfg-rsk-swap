@@ -193,9 +193,10 @@
                                 var contractRouter = new web3.eth.Contract(contractsInfo.routerContract.abi, contractsInfo.routerContract.address.toString().toLowerCase());
 
                                 console.log(inputToken, inputValue, outputValue, that2.defaultAccount);
-                                contractRouter.methods.addLiquidityETH(inputToken, inputValue, inputValue, outputValue, that2.defaultAccount, '0xFFFFFFFFFF').send({
+                                contractRouter.methods.addLiquidityETH(inputToken, inputValue, 0, outputValue, that2.defaultAccount, '0xFFFFFFFFFF').send({
                                     from: that2.defaultAccount,
-                                    value: outputValue
+                                    value: outputValue,
+                                    gasLimit: 3000000
                                 }); //gasLimit = 3000000
                             }
                         })
