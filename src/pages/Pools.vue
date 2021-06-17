@@ -31,7 +31,7 @@
           <br>
 
           <div>
-            <h5><i style="color:#2dce89" v-if="this.conversionValueA" class="tim-icons icon-alert-circle-exc"></i> <span class="text-success"> <b v-if="this.conversionValueA">Actual Price: </b>{{this.conversionValueA}}{{this.conversionTokensA}}</span></h5>
+            <h5><i style="color:#2dce89" v-if="this.conversionValueA" class="tim-icons icon-alert-circle-exc"></i> <span class="text-success"> </span><b v-if="this.conversionValueA">Actual Price: </b> <span class="text-success"> {{this.conversionValueA}}{{this.conversionTokensA}}</span></h5>
           </div>
           <br>
           <div id="buttons" style="display: table;margin: 0 auto;">
@@ -73,7 +73,7 @@
           <br>
 
           <div>
-            <h5><i style="color:#2dce89" v-if="this.conversionValueB" class="tim-icons icon-alert-circle-exc"></i> <span class="text-success"> <b v-if="this.conversionValueB" class="text-success">Actual Price: </b> {{this.conversionValueB}}{{this.conversionTokensB}}</span></h5>
+            <h5><i style="color:#2dce89" v-if="this.conversionValueB" class="tim-icons icon-alert-circle-exc"></i> <b v-if="this.conversionValueB" >Actual Price:</b>  <span class="text-success">{{this.conversionValueB}}{{this.conversionTokensB}}</span></h5>
           </div>
           <br>
         <div id="buttons" style="display: table;margin: 0 auto;">
@@ -197,7 +197,7 @@
                                     from: that2.defaultAccount,
                                     value: outputValue,
                                     gasLimit: 3000000
-                                }); //gasLimit = 3000000
+                                });
                             }
                         })
                     })
