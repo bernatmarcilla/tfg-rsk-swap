@@ -19,7 +19,7 @@ To add liquidity of a token, the user will provide the balance of the token he w
 Depending on whether the user wants to add liquidity of the tokenA ($TKA) or the tokenB ($TKB), will use the TokensA Liquidity Pool or the TokenB Liquidity Pool. 
 
 
-The user will first indicate the amount of the token pool that he wants to contribute along with the amount of equivalent value of the RBTC token. This RBTC equivalent value is automatically calculated when the user inputs the token amount, based on the tokenX/RBTC price relation. 
+The user will first indicate the amount of the token pool that he wants to contribute along with the amount of equivalent value of the RBTC token. This RBTC equivalent value is automatically calculated when the user inputs the token amount, based on the tokenX/RBTC price relation.  
 
 It will then be necessary to approve the expenditure of these tokens through the Metamask wallet so the Smart Contract can spend the user tokens and finally confirm the liquidity aggregation transaction. 
 
