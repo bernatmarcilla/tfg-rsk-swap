@@ -25,7 +25,7 @@ It will then be necessary to approve the expenditure of these tokens through the
 
 ![LiquidityPools](./public/img/LiquidityPools.PNG)
 
-## Swap
+## Swap 
 
 Swap page
 
