@@ -1,7 +1,7 @@
 # Vue-RSK Swap Demo
  ![version](https://img.shields.io/badge/release-v1.0-blue.svg)  
 
-This project is the practical part of a Computer Engineering final degree project related to the RSK Blockchain
+This project is the practical part of a Computer Engineering final degree project related to the RSK Blockchain. 
 
 The goal of the project was to deploy two ERC20 tokens in the RSK Testnet Network and develop a dApp that replicates the basic functionalities of a DEX (Decentralized Exchange) such as Add Liquidity and Swap tokens. 
 
@@ -18,7 +18,6 @@ To add liquidity of a token, the user will provide the balance of the token he w
 
 Depending on whether the user wants to add liquidity of the tokenA ($TKA) or the tokenB ($TKB), will use the TokensA Liquidity Pool or the TokenB Liquidity Pool. 
 
-
 The user will first indicate the amount of the token pool that he wants to contribute along with the amount of equivalent value of the RBTC token. This RBTC equivalent value is automatically calculated when the user inputs the token amount, based on the tokenX/RBTC price relation.  
 
 It will then be necessary to approve the expenditure of these tokens through the Metamask wallet so the Smart Contract can spend the user tokens and finally confirm the liquidity aggregation transaction. 
@@ -27,12 +26,18 @@ It will then be necessary to approve the expenditure of these tokens through the
 
 ## Swap 
 
-Swap page
+The Swap page provides the interface to exchanged between both ERC20 tokens deployed in RSK network. 
+
+The user needs to select the input and output token, specify the amount of the input token he wants to exchange and the output token amount will be automatically calculated based on the price relation between both ERC20 tokens so the user don't have to manually calculate the output amount he will obtain. 
+
+Like in the Liquidity provision process, the user will need to first approve the action, a needed process to give spending permissions to the Smart Contract. 
 
 ![Swap](./public/img/Swap.PNG)
 
 
 # Router Contract
+
+This Demo works with the Uniswap protocol UniswapV2Router02.sol, a Smart Contracts deployed both in the test and main RSK network. 
 
 This contract is deployed at [0xf55c496bb1058690DB1401c4b9C19F3f44374961](https://explorer.testnet.rsk.co/address/0xf55c496bb1058690db1401c4b9c19f3f44374961) and provides functions to manage and maintain liquidity pools and exchange between tokens deployed in the RSK network. 
 
@@ -52,14 +57,6 @@ npm run dev
   - Local:   http://localhost:8080/
   - Network: http://192.168.1.70:8080/
 
-
-## File Structure
-Within the download you'll find the following directories and files:
-
-```
-|-- Vue Black Dashboard
-
-```
 
 
 ## Browser Support
