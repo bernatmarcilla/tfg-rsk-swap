@@ -1,5 +1,8 @@
 # Vue-RSK Swap Demo
- ![version](https://img.shields.io/badge/release-v1.0-blue.svg)  
+ ### ![version](https://img.shields.io/badge/release-v1.0-blue.svg)
+ ![Vue.js](https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vue.js&logoColor=4FC08D)
+ ![Solidity](https://img.shields.io/badge/Solidity-007ACC?style=for-the-badge&logo=solidity&logoColor=white)
+ ![JavaScript](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
 
 This project is the practical part of a Computer Engineering final degree project related to the RSK Blockchain. 
 
